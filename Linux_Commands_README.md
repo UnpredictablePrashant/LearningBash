@@ -135,11 +135,11 @@ killall process_name	# Kill all processes with a specific name
 
 **Scenario**: Used for modifying user permissions.
 
-### There are particularly 3 main permissions 
-### read, write & execute represented by r, w, x respectively in Linux
-### Where r = 4, w = 2, x = 1. Permissions are given by adding these numbers, like for read only 4, for read & write only 6, for all permissions 7.
-### There are 3 kinds of users that require the permission 
-### owner, group & others
+There are particularly 3 main permissions
+read, write & execute represented by r, w, x respectively in Linux
+Where r = 4, w = 2, x = 1. Permissions are given by adding these numbers, like for read only 4, for read & write only 6, for all permissions 7
+There are 3 kinds of users that require the permission 
+owner, group & others
 
 **Example**:
 ```bash
