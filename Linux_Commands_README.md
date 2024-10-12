@@ -4,252 +4,236 @@
 This document provides an overview of common Linux commands. For each command, I have included a use case, explanation, and example.
 
 ## Table of Contents
-1. [File Management](#file-management)
-2. [Process Management](#process-management)
-3. [Networking](#networking)
-4. [System Monitoring](#system-monitoring)
-5. [Disk Usage](#disk-usage)
-6. [User and Permissions Management](#user-and-permissions-management)
-7. [Package Management](#package-management)
-8. [SSH and Remote Management](#ssh-and-remote-management)
-9. [System Maintenance](#system-maintenance)
+1. [Listing Files & Directories](#listing-files-&-directories)
+2. [Changing Directories](#changing-directories)
+3. [Creating Directories](#creating-directories)
+4. [Copying Files & Directories](#copying-files-&-directories)
+5. [Moving/Renaming Files](#moving/renaming-files)
+6. [Removing Files & Directories](#removing-files-&-directories)
+7. [Viewing File Contents](#viewing-file-contents)
+8. [Searching Files with grep](#searching-files-with-grep)
+9. [Viewing System Information](#viewing-system-information)
+10. [Process Management](#process-management)
+11. [Changing File Permissions](#changing-file-permissions)
+12. [Changing File Ownership](#changing-file-ownership)
+13. [Searching for Files](#searching-for-files)
+14. [Archiving and Compressing Files](#archiving-and-compressing-files)
+15. [Using sudo for Administrative Purposes](#using-sudo-for-administrative-purposes)
+16. [Networking](#networking)
+17. [Disk Usage](#disk-usage)
+18. [Package Management](#package-management)
+19. [SSH and Remote Management](#ssh-and-remote-management)
+20. [System Maintenance](#system-maintenance)
 
 ---
 
-## 1. File Management
+## 1. Listing Files & Directories
 
-### `ls`
 **Scenario**: Listing contents of a directory.
-**Explanation**: `ls` lists files and directories in the current working directory.
 **Example**:
 ```bash
-ls -lah
+ls -l # Long format listing with details (permissions, owner, size, data)
+ls -a # Show hidden files (those starting with a dot)
+ls -h # Human-readable sizes in long format
 ```
 
-### `cp`
+## 2. Changing Directories
+
+**Scenario**: To go from one directory to another
+**Example**:
+```bash
+cd.. # Go up one directory
+cd~  # Goto home directory
+cd-  # Goto last directory you were in
+```
+
+## 3. Creating Directories
+
+**Scenario**: To create a directory for any purpose.
+**Example**:
+```bash
+mkdir myFolder 	    # Creates a new directory
+mkdir -p dir1/dir2  # Creates a nested directory
+```
+
+## 4. Copying Files & Directories
+
 **Scenario**: Copying files from one location to another.
-**Explanation**: `cp` copies files and directories.
 **Example**:
 ```bash
-cp file.txt /home/user/backup/
+cp file.txt /home/user/backup/ 		     # Make a copy of existing file into a directory 
+cp source.txt destination.txt 		     # Make a copy of the file
+cp -r source/directory destination/directory # Copy directory recursively
 ```
 
-### `mv`
+## 5. Moving/Renaming Files
+
 **Scenario**: Moving or renaming files.
-**Explanation**: `mv` is used to move or rename files.
 **Example**:
 ```bash
-mv oldfile.txt newfile.txt
+mv oldfile.txt newfile.txt 		# Rename File
+mv file.txt /path/to/destination	# Move File to another Location
 ```
 
-### `rm`
+## 6. Removing Files & Directories
+
 **Scenario**: Removing files or directories.
-**Explanation**: `rm` deletes files or directories.
 **Example**:
 ```bash
-rm -rf /tmp/mydir/
+rm file.txt		# Removes a file
+rm -r directory		# Removes a directory and its contents
+rm -rf directory/	# Force removes a directory, even if non-empty
 ```
 
----
+## 7. Viewing File Contents
 
-## 2. Process Management
-
-### `ps`
-**Scenario**: Viewing currently running processes.
-**Explanation**: `ps` displays information about active processes.
+**Scenario**: Viewing contents present in a file.
 **Example**:
 ```bash
-ps aux
+cat file.txt		# Output the entire file
+less file.txt		# Scroll through the file contents (using up/down keys)
+head file.txt		# View the first 10 lines of a file
+tail file.txt		# View the last 10 lines of a file
+tail -f logfile.log	# Continuously outputs the end of a file (useful for logs)	
 ```
 
-### `top`
-**Scenario**: Monitoring system processes and resource usage in real-time.
-**Explanation**: `top` shows real-time system statistics including CPU and memory usage.
+## 8. Searching Files with grep
+
+**Scenario**: Searching file.
 **Example**:
 ```bash
-top
+grep "search_term" file.txt	# Search for a term in file
+grep -r "search_term" /path	# Recursively search within file in a directory
+grep -i "search_term" file.txt	# Case insensitive search
 ```
 
-### `kill`
-**Scenario**: Terminating a process.
-**Explanation**: `kill` sends signals to terminate processes by PID.
+## 9. Viewing System Information
+
+**Scenario**: Searching file.
 **Example**:
 ```bash
-kill -9 1234
+uname -a 	# Kernal Version and system information 
+df -h 		# Disk usage of file systems
+free -h 	# Displays memory usage
+top 		# Realtime system resource monitoring
+uptime 		# Provides system uptime and load average
+du 		# Estimates file space usage
 ```
 
----
+## 10. Process Management
 
-## 3. Networking
+**Scenario**: Mostly done for process management.
+**Example**:
+```bash
+ps aux			# List all running processes
+kill [pid]		# Terminate a process with its process ID (PID)
+kill -9 [pid]		# Force kill a process
+killall process_name	# Kill all processes with a specific name
+```
 
-### `ifconfig`
+## 11. Changing File Permissions
+
+**Scenario**: Used for modifying user permissions.
+
+### There are particularly 3 main permissions 
+### read, write & execute represented by r, w, x respectively in Linux
+### Where r = 4, w = 2, x = 1. Permissions are given by adding these numbers, like for read only 4, for read & write only 6, for all permissions 7.
+### There are 3 kinds of users that require the permission 
+### owner, group & others
+
+**Example**:
+```bash
+chmod 755 file.txt		# Assign read, write and execute permission (Owner: rwx, Group: r-x, Other: r-x)
+chmod u+x script.sh		# Gives the owner execute permissions
+chmod -R 777 /directory		# Grants all the users full permission on a directory recursively
+useradd -m new_user		# Adds new users to the system
+```
+
+## 12. Changing File Ownership
+
+**Scenario**: Changing the ownership of a file.
+**Example**:
+```bash
+chown user:group file.txt	# Change owner and group
+chown -R user:group /dir	# Recursively change ownership of all the files in a directory
+```
+
+## 13. Searching for Files
+
+**Scenario**: Searching a file.
+**Example**:
+```bash
+find /path -name 'file.txt'		# Search by filename
+find /path -type f -size +100M		# Find files larger than 100MB
+find /path -mtime -1			# Find file modified in last 24 hours
+```
+
+## 14. Archiving and Compressing Files
+
+**Scenario**: archive/compress a file.
+**Example**:
+```bash
+tar -cvf archive.tar /path		# Create a tar archive of a directory
+tar -xvf archive.tar			# Extract a tar archive
+tar -czvf archive.tar.gz /path		# Create a compressed gzip tar archive
+tar -xzvf archive.tar.gz		# Extract a compressed gzip tar archive
+```
+
+## 15. Using sudo for Administrative Purposes 
+
+**Scenario**: Administrative access
+**Example**:
+```bash
+sudo command		# Run a command as superuser/roon
+sudo su			# Switch to the root user
+```
+
+## 16. Networking
+
 **Scenario**: Configuring network interfaces.
-**Explanation**: `ifconfig` displays network interface information.
 **Example**:
 ```bash
-ifconfig eth0
+ifconfig eth0		# Displays network interface information
+ping google.com		# Sends ICMP echo requests to test connectivity to a host
+netstat -tuln		# Shows network-related statistics
+ssh user@hostname	# Used to log into remote machines over a network
 ```
 
-### `ping`
-**Scenario**: Checking network connectivity.
-**Explanation**: `ping` sends ICMP echo requests to test connectivity to a host.
+## 17. Disk Usage
+
+**Scenario**: Used to operate on disk.
 **Example**:
 ```bash
-ping google.com
+fdisk /dev/sda 			# Partitioning a disk
+mount /dev/sdb1 /mnt/backup 	# Attaches file systems to the system
 ```
 
-### `netstat`
-**Scenario**: Checking network connections, routing tables, and listening ports.
-**Explanation**: `netstat` shows network-related statistics.
+## 18. Package Management
+
+**Scenario**: Installing or updating packages.
 **Example**:
 ```bash
-netstat -tuln
+apt update # Installing packages (Debian/Ubuntu).
+apt upgrade # Updating packages (Debian/Ubuntu).
+yum install httpd # Installing or updating packages (RHEL/CentOS).
 ```
 
-### `ssh`
-**Scenario**: Accessing remote systems securely.
-**Explanation**: `ssh` is used to log into remote machines over a network.
+## 19. SSH and Remote Management
+
+**Scenario**: Securely copying & syncing files between systems.
 **Example**:
 ```bash
-ssh user@hostname
+scp file.txt user@remote:/path/to/destination/		# Securely copying files between systems
+rsync -av /src/ /dst/					# Syncing files between local and remote systems
 ```
 
----
+## 20. System Maintenance
 
-## 4. System Monitoring
-
-### `uptime`
-**Scenario**: Checking how long the system has been running.
-**Explanation**: `uptime` provides system uptime and load average.
+**Scenario**: System operation commands.
 **Example**:
 ```bash
-uptime
+reboot 			# Immediately restarts the system
+shutdown -h now 	# Powers off the system after a specified time
 ```
-
-### `df`
-**Scenario**: Viewing disk space usage.
-**Explanation**: `df` displays the available and used disk space for file systems.
-**Example**:
-```bash
-df -h
-```
-
-### `du`
-**Scenario**: Checking disk usage of files and directories.
-**Explanation**: `du` estimates file space usage.
-**Example**:
-```bash
-du -sh /var/log
-```
-
----
-
-## 5. Disk Usage
-
-### `fdisk`
-**Scenario**: Partitioning a disk.
-**Explanation**: `fdisk` manages disk partitions.
-**Example**:
-```bash
-fdisk /dev/sda
-```
-
-### `mount`
-**Scenario**: Mounting file systems.
-**Explanation**: `mount` attaches file systems to the system.
-**Example**:
-```bash
-mount /dev/sdb1 /mnt/backup
-```
-
----
-
-## 6. User and Permissions Management
-
-### `useradd`
-**Scenario**: Creating a new user.
-**Explanation**: `useradd` adds new users to the system.
-**Example**:
-```bash
-useradd -m newuser
-```
-
-### `chmod`
-**Scenario**: Changing file permissions.
-**Explanation**: `chmod` modifies file and directory access permissions.
-**Example**:
-```bash
-chmod 755 /home/user/scripts/
-```
-
-### `chown`
-**Scenario**: Changing file ownership.
-**Explanation**: `chown` changes the owner of files or directories.
-**Example**:
-```bash
-chown user:group file.txt
-```
-
----
-
-## 7. Package Management
-
-### `apt`
-**Scenario**: Installing or updating packages (Debian/Ubuntu).
-**Explanation**: `apt` is a package manager for Debian-based systems.
-**Example**:
-```bash
-apt update && apt upgrade
-```
-
-### `yum`
-**Scenario**: Installing or updating packages (RHEL/CentOS).
-**Explanation**: `yum` is a package manager for RHEL-based systems.
-**Example**:
-```bash
-yum install httpd
-```
-
----
-
-## 8. SSH and Remote Management
-
-### `scp`
-**Scenario**: Securely copying files between systems.
-**Explanation**: `scp` copies files over SSH.
-**Example**:
-```bash
-scp file.txt user@remote:/path/to/destination/
-```
-
-### `rsync`
-**Scenario**: Syncing files between local and remote systems.
-**Explanation**: `rsync` efficiently transfers and synchronizes files between systems.
-**Example**:
-```bash
-rsync -av /src/ /dst/
-```
-
----
-
-## 9. System Maintenance
-
-### `reboot`
-**Scenario**: Restarting the system.
-**Explanation**: `reboot` immediately restarts the system.
-**Example**:
-```bash
-reboot
-```
-
-### `shutdown`
-**Scenario**: Shutting down the system.
-**Explanation**: `shutdown` powers off the system after a specified time.
-**Example**:
-```bash
-shutdown -h now
-```
-
----
 
 These are some of the many commands used in various scenarios across different roles. Proper usage of these commands has been critical for system management, troubleshooting, and automation over the years.
